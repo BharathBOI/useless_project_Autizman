@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Camera, ShieldCheck, Film, Sparkles, Flame, Volume2, Maximize2, Minimize2 } from 'lucide-react';
+import { Camera, Sparkles, Flame, Volume2, Maximize2, Minimize2, Radio, ScanLine } from 'lucide-react';
 import { CameraState, TrackedFace } from '../types/vision';
 import { SerialSceneInterpretation } from '../types/llm';
 import { FaceOverlay } from './FaceOverlay';
@@ -19,10 +19,10 @@ export const BroadcastViewport: React.FC<BroadcastViewportProps> = ({
   trackedFaces,
   currentScene,
   onStartCamera,
-  onStopCamera,
 }) => {
-  const [vfxAnimation, setVfxAnimation] = useState<'triple-zoom' | 'shake' | 'flash-crimson' | 'flash-gold' | null>(null);
+  const [vfxAnimation, setVfxAnimation] = useState<'triple-zoom' | 'shake' | 'flash-crimson' | 'flash-gold' | 'flash-purple' | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showScanlines, setShowScanlines] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Trigger dramatic VFX whenever the scene changes dramatically
@@ -44,10 +44,6 @@ export const BroadcastViewport: React.FC<BroadcastViewportProps> = ({
     }
   }, [currentScene]);
 
-  const handleStart = () => {
-    onStartCamera();
-  };
-
   const toggleFullscreen = () => {
     if (!containerRef.current) return;
     if (!document.fullscreenElement) {
@@ -60,11 +56,11 @@ export const BroadcastViewport: React.FC<BroadcastViewportProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full max-w-5xl mx-auto rounded-2xl overflow-hidden bg-black shadow-2xl transition-all duration-500 border-2 ${
-        cameraState.isActive ? 'border-red-600/60 shadow-red-950/50' : 'border-white/10'
-      } ${isFullscreen ? 'h-screen max-w-none rounded-none' : 'aspect-video'}`}
+      className={`relative w-full rounded-xl overflow-hidden bg-black transition-all duration-300 border ${
+        cameraState.isActive ? 'border-purple-500/40 shadow-[0_0_30px_rgba(147,51,234,0.2)]' : 'border-white/10'
+      } ${isFullscreen ? 'h-screen w-screen rounded-none' : 'aspect-video min-h-[300px] sm:min-h-[380px]'}`}
     >
-      {/* Video element with conditional dramatic triple-zoom */}
+      {/* Video stream with conditional dramatic animations */}
       <div
         className={`w-full h-full relative overflow-hidden ${
           vfxAnimation === 'triple-zoom'
@@ -87,7 +83,7 @@ export const BroadcastViewport: React.FC<BroadcastViewportProps> = ({
         {/* Scanlines & Cinematic Vignette */}
         {cameraState.isActive && (
           <>
-            <div className="scanline-overlay" />
+            {showScanlines && <div className="scanline-overlay" />}
             <div className="cinematic-vignette" />
           </>
         )}
@@ -97,36 +93,41 @@ export const BroadcastViewport: React.FC<BroadcastViewportProps> = ({
           <div className="absolute inset-0 z-20 pointer-events-none animate-flash-crimson" />
         )}
         {vfxAnimation === 'triple-zoom' && (
-          <div className="absolute inset-0 z-20 pointer-events-none animate-flash-gold" />
+          <div className="absolute inset-0 z-20 pointer-events-none animate-flash-purple" />
         )}
 
         {/* Face Bounding Box & Emotion Reticle HUD */}
         {cameraState.isActive && <FaceOverlay faces={trackedFaces} />}
       </div>
 
-      {/* BROADCAST TELEVISION HUD (Active State) */}
+      {/* Broadcast Television HUD Overlay */}
       {cameraState.isActive && (
         <>
-          {/* Top Header Bug & Watermark */}
-          <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-center pointer-events-none select-none">
-            {/* Left: Live Channel Brand & Recording Indicator */}
-            <div className="flex items-center gap-2 bg-black/75 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-red-500/40 shadow-lg">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse-dot shadow-red-500 shadow-sm" />
-              <span className="text-xs font-mono font-bold tracking-widest text-red-400">
-                SERIAL TV • EPISODE 404
-              </span>
+          {/* Top Bar HUD */}
+          <div className="absolute top-3 left-3 right-3 z-20 flex justify-between items-center pointer-events-none select-none">
+            {/* Left: Stream Info */}
+            <div className="flex items-center gap-2 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs font-mono">
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse-dot shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+              <span className="text-zinc-200 font-semibold tracking-wider">LIVE FEED</span>
+              <span className="text-zinc-500">|</span>
+              <span className="text-purple-300">EP. 404</span>
             </div>
 
-            {/* Right: Watermark & Fullscreen toggle */}
-            <div className="flex items-center gap-2 pointer-events-auto">
-              <div className="flex items-center gap-1.5 bg-black/75 backdrop-blur-md px-3 py-1 rounded-full border border-amber-500/30 text-[11px] font-serif font-bold text-amber-300">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-spin" style={{ animationDuration: '4s' }} />
-                <span>GOLDEN DRAMA</span>
-              </div>
+            {/* Right: Controls & Toggles */}
+            <div className="flex items-center gap-1.5 pointer-events-auto">
+              <button
+                onClick={() => setShowScanlines(!showScanlines)}
+                className={`p-1.5 rounded-full border transition-all cursor-pointer ${
+                  showScanlines ? 'bg-purple-950/60 border-purple-500/40 text-purple-300' : 'bg-black/60 border-white/15 text-zinc-400'
+                }`}
+                title="Toggle Scanlines"
+              >
+                <ScanLine className="w-3.5 h-3.5" />
+              </button>
 
               <button
                 onClick={toggleFullscreen}
-                className="p-1.5 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 text-gray-300 hover:text-white transition-all cursor-pointer"
+                className="p-1.5 rounded-full bg-black/60 hover:bg-black/90 border border-white/15 text-zinc-300 hover:text-white transition-all cursor-pointer"
                 title={isFullscreen ? 'Exit Fullscreen' : 'Cinema Fullscreen'}
               >
                 {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
@@ -134,60 +135,57 @@ export const BroadcastViewport: React.FC<BroadcastViewportProps> = ({
             </div>
           </div>
 
-          {/* LOWER-THIRD BROADCAST STRIP: Encapsulated Serial Narrative */}
-          <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none select-none lower-third-glow p-4 md:p-6 flex flex-col gap-2">
+          {/* LOWER-THIRD STRIP: Encapsulated Serial Narrative */}
+          <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none select-none p-3 sm:p-4 bg-gradient-to-t from-black via-black/80 to-transparent flex flex-col gap-2">
             {currentScene ? (
-              <div className="flex flex-col gap-2 pointer-events-auto">
-                {/* Scene Meta Line */}
-                <div className="flex items-center justify-between gap-3 text-xs font-mono">
-                  <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full uppercase font-bold text-[10px] tracking-wider badge-crimson">
+              <div className="flex flex-col gap-1.5 pointer-events-auto bg-black/60 backdrop-blur-xl p-3 rounded-xl border border-white/10 shadow-2xl">
+                {/* Meta Header */}
+                <div className="flex items-center justify-between gap-2 text-xs font-mono">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="px-2 py-0.5 rounded-md uppercase font-bold text-[10px] tracking-wider bg-purple-950/80 border border-purple-500/40 text-purple-300">
                       {currentScene.sceneType.replace(/_/g, ' ')}
                     </span>
-                    <span className="flex items-center gap-1 text-[11px] text-amber-300 bg-black/60 px-2.5 py-0.5 rounded-full border border-amber-500/30">
+                    <span className="flex items-center gap-1 text-[11px] text-amber-300 bg-white/[0.04] px-2 py-0.5 rounded-md border border-white/10">
                       <Volume2 className="w-3 h-3 text-amber-400" />
-                      <span>BGM: {currentScene.audioCategory}</span>
+                      <span>{currentScene.audioCategory}</span>
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1 text-[11px] text-red-400 font-bold">
-                    <Flame className="w-3.5 h-3.5 animate-pulse" />
+                  <div className="flex items-center gap-1.5 text-xs text-purple-300 font-bold">
+                    <Flame className="w-3.5 h-3.5 text-red-400 animate-pulse" />
                     <span>DRAMA {currentScene.dramaticLevel}%</span>
                   </div>
                 </div>
 
-                {/* Dramatic Serial Episode Headline */}
-                <h2
-                  className="text-lg md:text-2xl font-black tracking-wide text-white uppercase serial-title drop-shadow-lg leading-tight"
-                  style={{ fontFamily: 'var(--font-serif)' }}
-                >
+                {/* Headline */}
+                <h2 className="text-sm sm:text-base md:text-lg font-bold tracking-tight text-white line-clamp-1">
                   "{currentScene.headline}"
                 </h2>
 
-                {/* Dramatic Serial Narration Ticker */}
-                <p className="text-xs md:text-sm text-gray-200 italic font-sans bg-black/65 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/10 shadow-md">
+                {/* Narration */}
+                <p className="text-xs text-zinc-300 italic font-sans line-clamp-2">
                   « {currentScene.narration} »
                 </p>
 
                 {/* Drama Intensity Bar */}
-                <div className="w-full h-1.5 bg-black/60 rounded-full overflow-hidden border border-white/10">
+                <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mt-0.5">
                   <div
-                    className="h-full rounded-full transition-all duration-700 ease-out"
+                    className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{
                       width: `${Math.max(5, Math.min(100, currentScene.dramaticLevel))}%`,
-                      background: 'linear-gradient(90deg, #f59e0b 0%, #ef4444 60%, #991b1b 100%)',
+                      background: 'linear-gradient(90deg, #8b5cf6 0%, #ec4899 50%, #ef4444 100%)',
                     }}
                   />
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between text-xs font-mono text-gray-400 bg-black/60 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+              <div className="flex items-center justify-between text-xs font-mono text-zinc-400 bg-black/60 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/10">
                 <div className="flex items-center gap-2">
-                  <Film className="w-4 h-4 text-red-400 animate-pulse" />
-                  <span>Awaiting character expressions & dramatic events...</span>
+                  <Radio className="w-3.5 h-3.5 text-purple-400 animate-pulse" />
+                  <span>Tracking character expressions & dramatic glances...</span>
                 </div>
-                <span className="text-[11px] text-gray-500">
-                  {trackedFaces.length === 0 ? 'No faces in frame' : `${trackedFaces.length} character(s) detected`}
+                <span className="text-[11px] text-zinc-500">
+                  {trackedFaces.length === 0 ? 'No characters in frame' : `${trackedFaces.length} active`}
                 </span>
               </div>
             )}
@@ -197,46 +195,37 @@ export const BroadcastViewport: React.FC<BroadcastViewportProps> = ({
 
       {/* STANDBY HERO STATE (Camera Off) */}
       {!cameraState.isActive && !cameraState.isLoading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-gray-950/80 via-black to-gray-950/95 z-10">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-red-600/30 to-black border border-red-500/40 flex items-center justify-center mb-5 shadow-2xl shadow-red-950">
-            <Camera className="w-10 h-10 text-red-500 animate-pulse" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-zinc-950/90 via-black to-zinc-950/95 z-10">
+          <div className="relative mb-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-purple-600/30 to-indigo-950/40 border border-purple-500/30 flex items-center justify-center shadow-[0_0_40px_rgba(168,85,247,0.25)]">
+              <Camera className="w-8 h-8 sm:w-10 sm:h-10 text-purple-400 animate-pulse" />
+            </div>
+            <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-black" />
           </div>
 
-          <h3
-            className="text-2xl md:text-3xl font-black tracking-widest text-white mb-2 uppercase"
-            style={{ fontFamily: 'var(--font-serif)' }}
-          >
-            READY FOR SERIAL DRAMA
+          <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white mb-2 font-sans">
+            Ready For Real-Time Melodrama
           </h3>
 
-          <p className="text-xs md:text-sm text-gray-400 max-w-md mb-6 leading-relaxed">
-            Turn your webcam into an authentic Malayalam TV mega-serial. Micro-expressions, angry glances, and accidental entrances trigger live dramatic soundtracks, serial lower-thirds, and iconic triple-zooms.
+          <p className="text-xs sm:text-sm text-zinc-400 max-w-md mb-6 leading-relaxed">
+            Turn your webcam into an authentic Malayalam TV mega-serial scene. Micro-expressions and accidental entrances trigger live serial scores, lower-thirds, and iconic triple-zooms.
           </p>
 
           <button
-            onClick={handleStart}
-            className="group relative inline-flex items-center gap-3 px-8 py-3.5 text-sm md:text-base font-bold text-white uppercase tracking-widest rounded-xl overflow-hidden transition-all duration-300 cursor-pointer shadow-xl hover:scale-105 active:scale-95 border border-red-500/50"
-            style={{
-              background: 'linear-gradient(135deg, #dc2626 0%, #7f1d1d 100%)',
-              boxShadow: '0 0 30px rgba(220, 38, 38, 0.45)',
-            }}
+            onClick={onStartCamera}
+            className="btn-glow-purple px-6 py-3 rounded-xl text-xs sm:text-sm font-semibold tracking-wide text-white uppercase flex items-center gap-2 cursor-pointer transition-all"
           >
-            <Camera className="w-5 h-5 transition-transform group-hover:rotate-12 text-white" />
-            <span>COMMENCE BROADCAST</span>
+            <Sparkles className="w-4 h-4 text-purple-200" />
+            <span>Commence Broadcast</span>
           </button>
-
-          <div className="flex items-center gap-2 mt-5 text-[11px] text-gray-500 font-mono">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span>100% Private & Client-Side. No video is ever stored or transmitted.</span>
-          </div>
         </div>
       )}
 
       {/* Loading State */}
       {cameraState.isLoading && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-30">
-          <div className="w-12 h-12 border-4 border-red-600/20 border-t-red-500 rounded-full animate-spin mb-4" />
-          <p className="text-xs font-mono font-medium text-gray-300 tracking-widest">
+          <div className="w-10 h-10 border-2 border-purple-500/20 border-t-purple-500 rounded-full animate-spin mb-3" />
+          <p className="text-xs font-mono font-medium text-zinc-300 tracking-wider">
             INITIALIZING HIGH-DEFINITION CAMERA...
           </p>
         </div>
