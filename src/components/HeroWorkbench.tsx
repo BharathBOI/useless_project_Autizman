@@ -5,25 +5,20 @@ import {
   HeartCrack, 
   Sparkles, 
   Square, 
-  Volume2, 
-  VolumeX, 
   Code2, 
   Terminal, 
   Music, 
   Users, 
   Play, 
   Flame, 
-  Activity, 
-  Eye, 
   Film,
-  CheckCircle2,
   RefreshCw
 } from 'lucide-react';
 import { BroadcastViewport } from './BroadcastViewport';
 import { CameraState, TrackedFace } from '../types/vision';
 import { SerialEvent } from '../types/events';
 import { SerialSceneInterpretation } from '../types/llm';
-import { AudioEngine, DramaticPresetName, PRESET_CALIBRATION } from '../audio/audioEngine';
+import { AudioEngine, DramaticPresetName } from '../audio/audioEngine';
 
 interface HeroWorkbenchProps {
   videoRef: React.RefObject<HTMLVideoElement | null>;
@@ -71,46 +66,45 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
 
   return (
     <div className="relative w-full max-w-6xl mx-auto px-2 sm:px-4">
-      {/* Radiant ambient purple spotlight glowing behind the workbench */}
-      <div className="ambient-glow-purple" />
-
-      {/* Main Glassmorphic Workbench Card */}
-      <div className="relative z-10 rounded-2xl glass-card-elevated border border-white/10 overflow-hidden bg-[#07070e]/85 backdrop-blur-3xl shadow-[0_25px_80px_rgba(0,0,0,0.8)]">
+      {/* Workbench Card with Watermelon UI clean dark border */}
+      <div className="relative z-10 rounded-xl border border-white/10 overflow-hidden bg-[#0d0d12] shadow-2xl">
         {/* Top Window Bar */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.08] bg-black/40 text-xs font-mono">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.08] bg-black/50 text-xs font-mono">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#84cc16]/80" />
+              <span className="w-2.5 h-2.5 rounded-full bg-zinc-600" />
+              <span className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
             </div>
-            <span className="hidden sm:inline text-zinc-500 ml-2">|</span>
-            <span className="text-zinc-400 font-semibold tracking-wider flex items-center gap-1.5">
-              <Film className="w-3.5 h-3.5 text-purple-400" />
-              <span>serialos_stage.tsx</span>
+            <span className="hidden sm:inline text-zinc-600 ml-2">|</span>
+            <span className="text-zinc-400 font-medium tracking-wider flex items-center gap-1.5">
+              <Film className="w-3.5 h-3.5 text-[#84cc16]" />
+              <span>parambara_stage.tsx</span>
             </span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-[11px] text-zinc-500">RUNTIME: v2.4.0-PROD</span>
-            <span className="px-2 py-0.5 rounded-full bg-purple-950/60 border border-purple-500/30 text-purple-300 text-[10px] font-bold">
-              {cameraState.isActive ? 'ACTIVE PIPELINE' : 'IDLE'}
+            <span className="text-[11px] text-zinc-500 font-mono">PARAMBARAHUB • LIVE RUNTIME</span>
+            <span className={`px-2 py-0.5 rounded text-[10px] font-bold font-mono ${
+              cameraState.isActive ? 'bg-[#84cc16]/20 text-[#84cc16] border border-[#84cc16]/40' : 'bg-zinc-800 text-zinc-400'
+            }`}>
+              {cameraState.isActive ? 'ACTIVE' : 'STANDBY'}
             </span>
           </div>
         </div>
 
-        {/* 3-Column / Grid Layout */}
+        {/* 3-Column Studio Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0">
-          {/* Left Column: Telemetry & Director Cues (3 cols on desktop) */}
-          <div className="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-white/[0.08] p-3.5 sm:p-4 flex flex-col gap-4 bg-black/20">
-            {/* Cast & Character Telemetry */}
+          {/* Left Column: Telemetry & Director Cues */}
+          <div className="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-white/[0.08] p-3.5 sm:p-4 flex flex-col gap-4 bg-[#09090c]">
+            {/* Active Cast Telemetry */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
                 <span className="flex items-center gap-1.5 text-zinc-300 font-semibold uppercase tracking-wider">
-                  <Users className="w-3.5 h-3.5 text-purple-400" />
+                  <Users className="w-3.5 h-3.5 text-[#84cc16]" />
                   <span>Active Cast</span>
                 </span>
-                <span className="text-[11px] text-purple-300 px-1.5 py-0.5 rounded bg-purple-950/50 border border-purple-500/20">
+                <span className="text-[11px] text-[#84cc16] px-1.5 py-0.5 rounded bg-white/[0.04] border border-white/10 font-bold">
                   {trackedFaces.length} Detected
                 </span>
               </div>
@@ -120,14 +114,14 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
                   {trackedFaces.map((face) => (
                     <div
                       key={face.faceId}
-                      className="p-2 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-between text-xs"
+                      className="p-2 rounded-lg bg-white/[0.02] border border-white/[0.06] flex items-center justify-between text-xs"
                     >
                       <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-lg bg-purple-950/70 border border-purple-500/30 flex items-center justify-center font-mono font-bold text-[11px] text-purple-300">
+                        <div className="w-6 h-6 rounded bg-[#84cc16]/20 border border-[#84cc16]/40 flex items-center justify-center font-mono font-bold text-[10px] text-[#84cc16]">
                           {face.faceId.slice(-2)}
                         </div>
                         <div className="flex flex-col">
-                          <span className="font-semibold text-zinc-200 capitalize">
+                          <span className="font-medium text-zinc-200 capitalize">
                             {face.currentExpression}
                           </span>
                           <span className="text-[10px] text-zinc-500 font-mono">
@@ -135,27 +129,27 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
                           </span>
                         </div>
                       </div>
-                      <span className="text-[11px] font-mono text-emerald-400 font-bold">
+                      <span className="text-[11px] font-mono text-[#84cc16] font-bold">
                         {Math.round(face.expressionConfidence * 100)}%
                       </span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="p-3 rounded-xl bg-white/[0.02] border border-dashed border-white/10 text-center text-xs text-zinc-500">
-                  {cameraState.isActive ? 'No characters in frame' : 'Launch camera to detect actors'}
+                <div className="p-3 rounded-lg bg-white/[0.02] border border-dashed border-white/10 text-center text-xs text-zinc-500 font-mono">
+                  {cameraState.isActive ? 'No characters in frame' : 'Launch stream to detect actors'}
                 </div>
               )}
             </div>
 
             {/* Dramatic Tension Meter */}
-            <div className="flex flex-col gap-1.5 p-3 rounded-xl bg-white/[0.02] border border-white/[0.06]">
+            <div className="flex flex-col gap-1.5 p-3 rounded-lg bg-white/[0.02] border border-white/[0.06]">
               <div className="flex items-center justify-between text-xs font-mono">
                 <span className="flex items-center gap-1 text-zinc-300 font-medium">
-                  <Flame className="w-3.5 h-3.5 text-red-400" />
+                  <Flame className="w-3.5 h-3.5 text-[#84cc16]" />
                   <span>Dramatic Tension</span>
                 </span>
-                <span className="text-purple-300 font-bold font-mono">{tensionPercent}%</span>
+                <span className="text-[#84cc16] font-bold font-mono">{tensionPercent}%</span>
               </div>
 
               <div className="w-full h-1.5 bg-black/60 rounded-full overflow-hidden border border-white/10">
@@ -163,7 +157,7 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
                   className="h-full rounded-full transition-all duration-700 ease-out"
                   style={{
                     width: `${Math.max(8, Math.min(100, tensionPercent))}%`,
-                    background: 'linear-gradient(90deg, #6366f1 0%, #a855f7 40%, #ec4899 80%, #ef4444 100%)',
+                    background: 'linear-gradient(90deg, #84cc16 0%, #eab308 60%, #ef4444 100%)',
                   }}
                 />
               </div>
@@ -171,23 +165,23 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
 
             {/* Director Quick Action Cues */}
             <div className="flex flex-col gap-2 mt-auto">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-bold">
                 Director Quick Cues
               </span>
 
               <div className="grid grid-cols-2 gap-1.5">
                 <button
                   onClick={() => onTriggerCue('SHOCK_1')}
-                  className="flex items-center gap-1.5 p-2 rounded-xl bg-purple-950/30 hover:bg-purple-900/50 border border-purple-500/30 text-purple-200 text-xs font-mono font-medium transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  className="flex items-center gap-1.5 p-2 rounded-md bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-[#84cc16]/50 text-zinc-200 hover:text-[#84cc16] text-xs font-mono font-medium transition-all cursor-pointer"
                   title="Trigger dramatic shock & triple zoom"
                 >
-                  <Zap className="w-3 h-3 text-amber-400" />
+                  <Zap className="w-3 h-3 text-[#84cc16]" />
                   <span>Shock Cut</span>
                 </button>
 
                 <button
                   onClick={() => onTriggerCue('VILLAIN_1')}
-                  className="flex items-center gap-1.5 p-2 rounded-xl bg-red-950/30 hover:bg-red-900/50 border border-red-500/30 text-red-200 text-xs font-mono font-medium transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  className="flex items-center gap-1.5 p-2 rounded-md bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-red-500/50 text-zinc-200 hover:text-red-300 text-xs font-mono font-medium transition-all cursor-pointer"
                   title="Trigger villain revenge stinger"
                 >
                   <Skull className="w-3 h-3 text-red-400" />
@@ -196,7 +190,7 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
 
                 <button
                   onClick={() => onTriggerCue('SAD_1')}
-                  className="flex items-center gap-1.5 p-2 rounded-xl bg-blue-950/30 hover:bg-blue-900/50 border border-blue-500/30 text-blue-200 text-xs font-mono font-medium transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  className="flex items-center gap-1.5 p-2 rounded-md bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-blue-500/50 text-zinc-200 hover:text-blue-300 text-xs font-mono font-medium transition-all cursor-pointer"
                   title="Trigger tragic violin melodrama"
                 >
                   <HeartCrack className="w-3 h-3 text-blue-400" />
@@ -205,10 +199,10 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
 
                 <button
                   onClick={() => onTriggerCue('HAPPY_1')}
-                  className="flex items-center gap-1.5 p-2 rounded-xl bg-emerald-950/30 hover:bg-emerald-900/50 border border-emerald-500/30 text-emerald-200 text-xs font-mono font-medium transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  className="flex items-center gap-1.5 p-2 rounded-md bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-[#84cc16]/50 text-zinc-200 hover:text-[#84cc16] text-xs font-mono font-medium transition-all cursor-pointer"
                   title="Trigger rare moment of family peace"
                 >
-                  <Sparkles className="w-3 h-3 text-emerald-400" />
+                  <Sparkles className="w-3 h-3 text-[#84cc16]" />
                   <span>Harmony</span>
                 </button>
               </div>
@@ -216,7 +210,7 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
               <div className="flex items-center gap-1.5 mt-1">
                 <button
                   onClick={onSilenceAudio}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-zinc-400 hover:text-white text-xs font-mono transition-all cursor-pointer"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 text-zinc-400 hover:text-white text-xs font-mono transition-all cursor-pointer"
                   title="Silence active audio score"
                 >
                   <Square className="w-3 h-3" />
@@ -225,7 +219,7 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
 
                 <button
                   onClick={onResetScene}
-                  className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-zinc-400 hover:text-white transition-all cursor-pointer"
+                  className="p-1.5 rounded-md bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 text-zinc-400 hover:text-white transition-all cursor-pointer"
                   title="Reset dramatic scene state"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
@@ -234,7 +228,7 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
             </div>
           </div>
 
-          {/* Center Column: Live Broadcast Viewport (6 cols on desktop) */}
+          {/* Center Column: Live Broadcast Viewport */}
           <div className="lg:col-span-6 p-3 sm:p-4 flex flex-col justify-center bg-black/40">
             <BroadcastViewport
               videoRef={videoRef}
@@ -246,15 +240,15 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
             />
           </div>
 
-          {/* Right Column: Code & Audio Tabs (3 cols on desktop) */}
-          <div className="lg:col-span-3 border-t lg:border-t-0 lg:border-l border-white/[0.08] p-3.5 sm:p-4 flex flex-col bg-black/20">
+          {/* Right Column: Code & Audio Tabs */}
+          <div className="lg:col-span-3 border-t lg:border-t-0 lg:border-l border-white/[0.08] p-3.5 sm:p-4 flex flex-col bg-[#09090c]">
             {/* Editor Tabs */}
-            <div className="flex items-center gap-1 p-1 rounded-xl bg-black/60 border border-white/10 mb-3 text-xs font-mono">
+            <div className="flex items-center gap-1 p-1 rounded-md bg-black/60 border border-white/10 mb-3 text-xs font-mono">
               <button
                 onClick={() => setActiveTab('script')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`flex-1 flex items-center justify-center gap-1.5 py-1 rounded transition-all cursor-pointer ${
                   activeTab === 'script'
-                    ? 'bg-purple-950/70 border border-purple-500/30 text-purple-200 font-semibold'
+                    ? 'bg-white/[0.08] text-[#84cc16] font-bold border border-white/10'
                     : 'text-zinc-400 hover:text-zinc-200'
                 }`}
               >
@@ -264,9 +258,9 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
 
               <button
                 onClick={() => setActiveTab('audio')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`flex-1 flex items-center justify-center gap-1.5 py-1 rounded transition-all cursor-pointer ${
                   activeTab === 'audio'
-                    ? 'bg-purple-950/70 border border-purple-500/30 text-purple-200 font-semibold'
+                    ? 'bg-white/[0.08] text-[#84cc16] font-bold border border-white/10'
                     : 'text-zinc-400 hover:text-zinc-200'
                 }`}
               >
@@ -276,9 +270,9 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
 
               <button
                 onClick={() => setActiveTab('logs')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-1 rounded-lg transition-all cursor-pointer ${
+                className={`flex-1 flex items-center justify-center gap-1.5 py-1 rounded transition-all cursor-pointer ${
                   activeTab === 'logs'
-                    ? 'bg-purple-950/70 border border-purple-500/30 text-purple-200 font-semibold'
+                    ? 'bg-white/[0.08] text-[#84cc16] font-bold border border-white/10'
                     : 'text-zinc-400 hover:text-zinc-200'
                 }`}
               >
@@ -290,50 +284,50 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
             {/* Tab 1: Script Screenplay (Syntax Highlighted) */}
             {activeTab === 'script' && (
               <div className="flex-1 flex flex-col justify-between overflow-hidden">
-                <div className="p-3 rounded-xl bg-[#090913] border border-white/[0.06] font-mono text-xs overflow-y-auto max-h-[310px]">
-                  <div className="text-zinc-500 mb-2">// LIVE SCENE INTERPRETATION</div>
-                  <div className="text-purple-400 font-bold">
-                    const <span className="text-white">activeEpisode</span> = &#123;
+                <div className="p-3 rounded-lg bg-black/60 border border-white/[0.08] font-mono text-xs overflow-y-auto max-h-[310px]">
+                  <div className="text-zinc-600 mb-2">// PARAMBARAHUB SCENE INTERPRETER</div>
+                  <div className="text-zinc-300 font-bold">
+                    <span className="text-[#84cc16]">const</span> activeScene = &#123;
                   </div>
 
                   <div className="pl-3 py-1 flex flex-col gap-1 text-[11px]">
                     <div>
-                      <span className="text-zinc-400">headline: </span>
-                      <span className="text-amber-300 font-serif">
+                      <span className="text-zinc-500">headline: </span>
+                      <span className="text-zinc-200 font-serif">
                         "{currentScene?.headline || 'The Calm Before The Storm'}"
                       </span>,
                     </div>
                     <div>
-                      <span className="text-zinc-400">sceneType: </span>
-                      <span className="text-pink-400 font-semibold">
+                      <span className="text-zinc-500">sceneType: </span>
+                      <span className="text-[#84cc16] font-semibold">
                         "{currentScene?.sceneType || 'SUSPENSE'}"
                       </span>,
                     </div>
                     <div>
-                      <span className="text-zinc-400">scoreBgm: </span>
-                      <span className="text-cyan-300">
+                      <span className="text-zinc-500">scoreBgm: </span>
+                      <span className="text-amber-400">
                         "{currentScene?.audioCategory || 'WAITING'}"
                       </span>,
                     </div>
                     <div>
-                      <span className="text-zinc-400">tension: </span>
-                      <span className="text-emerald-400">{tensionPercent}%</span>,
+                      <span className="text-zinc-500">tension: </span>
+                      <span className="text-[#84cc16]">{tensionPercent}%</span>,
                     </div>
                     <div>
-                      <span className="text-zinc-400">narration: </span>
+                      <span className="text-zinc-500">narration: </span>
                       <span className="text-zinc-300 italic">
                         "{currentScene?.narration || 'A tense silence blankets the ancestral family home...'}"
                       </span>
                     </div>
                   </div>
 
-                  <div className="text-purple-400 font-bold">&#125;;</div>
+                  <div className="text-zinc-300 font-bold">&#125;;</div>
 
                   {currentScene && (
-                    <div className="mt-3 pt-2 border-t border-white/[0.06]">
-                      <div className="text-zinc-500 text-[10px] mb-1">// SERIAL NARRATION CLIMAX</div>
+                    <div className="mt-3 pt-2 border-t border-white/[0.08]">
+                      <div className="text-zinc-600 text-[10px] mb-1">// SERIAL NARRATION CLIMAX</div>
                       <div className="text-[11px] text-zinc-300 py-0.5">
-                        <span className="text-purple-400 font-bold">Stinger Cue: </span>
+                        <span className="text-[#84cc16] font-bold">Stinger Cue: </span>
                         <span>« {currentScene.narration} »</span>
                       </div>
                     </div>
@@ -342,17 +336,17 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
 
                 <div className="mt-2 flex items-center justify-between text-[11px] font-mono text-zinc-500 px-1">
                   <span>Engine: Gemini 2.0 Flash</span>
-                  <span className="text-emerald-400">● Synced</span>
+                  <span className="text-[#84cc16]">● Synced</span>
                 </div>
               </div>
             )}
 
             {/* Tab 2: Audio Stems & Tracklist */}
             {activeTab === 'audio' && (
-              <div className="flex-1 flex flex-col gap-2 overflow-y-auto max-h-[320px] pr-1">
-                <div className="text-[11px] font-mono text-zinc-400 flex items-center justify-between">
-                  <span>SERIAL TRACK LIBRARY</span>
-                  <span className="text-purple-400 font-bold">
+              <div className="flex-1 flex flex-col gap-1.5 overflow-y-auto max-h-[320px] pr-1">
+                <div className="text-[11px] font-mono text-zinc-400 flex items-center justify-between mb-1">
+                  <span>PARAMBARA TRACK VAULT</span>
+                  <span className="text-[#84cc16] font-bold">
                     {currentPreset ? currentPreset : 'IDLE'}
                   </span>
                 </div>
@@ -363,19 +357,19 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
                     <div
                       key={track.id}
                       onClick={() => onTriggerCue(track.id)}
-                      className={`p-2 rounded-xl border flex items-center justify-between transition-all cursor-pointer text-xs ${
+                      className={`p-2 rounded-md border flex items-center justify-between transition-all cursor-pointer text-xs ${
                         isCurrent
-                          ? 'bg-purple-950/60 border-purple-500 text-white shadow-md shadow-purple-950'
+                          ? 'bg-white/[0.08] border-[#84cc16] text-white'
                           : 'bg-white/[0.02] border-white/[0.06] text-zinc-300 hover:border-white/20'
                       }`}
                     >
                       <div className="flex items-center gap-2">
                         <button
-                          className={`w-6 h-6 rounded-lg flex items-center justify-center ${
-                            isCurrent ? 'bg-purple-600 text-white' : 'bg-white/10 text-zinc-300'
+                          className={`w-5 h-5 rounded flex items-center justify-center ${
+                            isCurrent ? 'bg-[#84cc16] text-black' : 'bg-white/10 text-zinc-300'
                           }`}
                         >
-                          <Play className="w-3 h-3 fill-current ml-0.5" />
+                          <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
                         </button>
                         <div className="flex flex-col">
                           <span className="font-medium leading-tight">{track.name}</span>
@@ -395,16 +389,16 @@ export const HeroWorkbench: React.FC<HeroWorkbenchProps> = ({
             {/* Tab 3: Telemetry Logs */}
             {activeTab === 'logs' && (
               <div className="flex-1 flex flex-col overflow-hidden">
-                <div className="p-2.5 rounded-xl bg-[#090913] border border-white/[0.06] font-mono text-xs overflow-y-auto max-h-[310px] flex flex-col gap-1.5">
+                <div className="p-2.5 rounded-lg bg-black/60 border border-white/[0.08] font-mono text-xs overflow-y-auto max-h-[310px] flex flex-col gap-1.5">
                   {events.length > 0 ? (
                     events.slice(0, 15).map((ev, idx) => (
                       <div key={idx} className="flex items-start gap-1.5 text-[11px] text-zinc-300 py-0.5">
                         <span className="text-zinc-600">[{new Date(ev.timestamp).toLocaleTimeString().slice(3, 8)}]</span>
-                        <span className="text-purple-400 font-semibold">{ev.type}</span>
+                        <span className="text-[#84cc16] font-semibold">{ev.type}</span>
                       </div>
                     ))
                   ) : (
-                    <div className="text-center text-zinc-600 py-8 text-xs">
+                    <div className="text-center text-zinc-600 py-8 text-xs font-mono">
                       No events registered yet. Face expressions will populate this log in real time.
                     </div>
                   )}

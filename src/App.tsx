@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Sparkles, Camera, ArrowDown, Music, Play, Layers } from 'lucide-react';
+import { Camera, Music } from 'lucide-react';
 import { BroadcastHeader } from './components/BroadcastHeader';
 import { HeroWorkbench } from './components/HeroWorkbench';
 import { BentoGrid } from './components/BentoGrid';
@@ -198,8 +198,8 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#040408] text-zinc-100 flex flex-col items-center selection:bg-purple-600 selection:text-white">
-      {/* Floating Modern Header / Navbar */}
+    <div className="min-h-screen bg-[#09090b] text-zinc-100 flex flex-col items-center selection:bg-[#84cc16] selection:text-black">
+      {/* Watermelon UI styled Navigation Header */}
       <BroadcastHeader
         isCameraActive={cameraState.isActive}
         isAudioPlaying={isAudioPlaying}
@@ -212,45 +212,45 @@ export const App: React.FC = () => {
 
       {/* Main Content Flow */}
       <main className="w-full flex flex-col items-center">
-        {/* HERO SECTION (Faithfully matching top of user's reference image) */}
-        <section id="workbench" className="w-full max-w-5xl mx-auto px-4 pt-12 pb-10 sm:pt-20 sm:pb-16 text-center relative">
-          {/* Subtle Top Pill Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/40 border border-purple-500/30 text-purple-300 text-xs font-mono font-medium mb-6 backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-            <span>AI Mega-Serial Operating System • v2.4</span>
+        {/* HERO SECTION (Faithfully matching Watermelon UI layout & typography) */}
+        <section id="workbench" className="w-full max-w-5xl mx-auto px-4 pt-16 pb-12 sm:pt-24 sm:pb-20 text-center relative crosshair-corner">
+          {/* Watermelon UI Monospace Pill Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md pill-badge mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#84cc16]" />
+            <span>OPEN SOURCE — FREE SERIAL DRAMA</span>
           </div>
 
-          {/* Bold Headline with Gradient Accent (Matching Reference Design) */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-6 font-sans leading-[1.15]">
-            The Best Place To Build, Score, And Discover <br className="hidden sm:inline" />
-            <span className="gradient-text-purple">Front-End Melodrama.</span>
+          {/* Bold Headline matching Watermelon UI ('Beautiful Components Built for designers') */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white mb-6 font-sans leading-[1.1]">
+            Beautiful Melodrama <br />
+            Built for <span className="text-[#84cc16]">dramatists</span>
           </h1>
 
-          {/* Sub-headline */}
-          <p className="text-sm sm:text-base md:text-lg text-zinc-400 max-w-2xl mx-auto mb-8 font-sans leading-relaxed">
-            A cloud-orchestrated serial environment for human micro-expressions. Instant Malayalam TV scores, real-time emotion telemetry, and zero-latency triple zooms.
+          {/* Sub-headline matching Watermelon UI typography */}
+          <p className="text-sm sm:text-base md:text-lg text-zinc-400 max-w-2xl mx-auto mb-10 font-sans leading-relaxed">
+            600+ dramatic cues and authentic Malayalam TV serial stingers crafted for everyday human reactions. Open your mouth, glare at relatives, and trigger instant climaxes — no strings attached.
           </p>
 
-          {/* Glowing Purple & Frosted Glass Action Buttons (Matching Reference Design) */}
-          <div className="flex items-center justify-center gap-3 sm:gap-4 flex-wrap mb-12 sm:mb-16">
+          {/* Action Buttons matching Watermelon UI */}
+          <div className="flex items-center justify-center gap-3 sm:gap-4 flex-wrap mb-14 sm:mb-20">
             <button
               onClick={handleToggleCamera}
-              className="btn-glow-purple px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl text-xs sm:text-sm font-semibold tracking-wide text-white uppercase flex items-center gap-2 cursor-pointer shadow-xl transition-all hover:scale-105 active:scale-95"
+              className="btn-lime px-6 sm:px-8 py-3 rounded-md text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-lg"
             >
-              <Camera className="w-4 h-4" />
-              <span>{cameraState.isActive ? 'Cut Broadcast' : 'Commence Broadcast'}</span>
+              <Camera className="w-4 h-4 text-black" />
+              <span>{cameraState.isActive ? 'Cut Stream' : 'Get Started'}</span>
             </button>
 
             <button
               onClick={() => handleTriggerPreset('SHOCK_1')}
-              className="px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-xs sm:text-sm font-semibold text-zinc-300 hover:text-white transition-all cursor-pointer flex items-center gap-2"
+              className="btn-dark px-5 sm:px-6 py-3 rounded-md text-xs sm:text-sm font-mono font-medium transition-all cursor-pointer flex items-center gap-2"
             >
-              <Music className="w-4 h-4 text-purple-400" />
+              <Music className="w-4 h-4 text-[#84cc16]" />
               <span>Test Thunder Cue</span>
             </button>
           </div>
 
-          {/* Centerpiece Interactive Hero Workbench (Matching central console mockup in image) */}
+          {/* Centerpiece Hero Workbench */}
           <HeroWorkbench
             videoRef={videoRef}
             cameraState={cameraState}
@@ -268,20 +268,20 @@ export const App: React.FC = () => {
           />
         </section>
 
-        {/* BENTO GRID SECTION ("All Of Your Deployments In One Place" Matching Reference Design) */}
+        {/* BENTO GRID SECTION */}
         <BentoGrid
           onTriggerPreset={handleTriggerPreset}
           isAudioPlaying={isAudioPlaying}
         />
 
-        {/* READY TO JOIN A NEW DIMENSION SECTION (Matching Bottom Right of Reference Design) */}
+        {/* READY TO JOIN A NEW DIMENSION SECTION */}
         <DimensionCta
           onStartCamera={handleToggleCamera}
           isCameraActive={cameraState.isActive}
         />
       </main>
 
-      {/* Modern Developer Platform Footer */}
+      {/* Watermelon UI Footer */}
       <ModernFooter />
     </div>
   );

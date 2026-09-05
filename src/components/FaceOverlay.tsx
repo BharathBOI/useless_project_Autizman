@@ -16,13 +16,13 @@ const EXPRESSION_EMOJIS: Record<ExpressionType, string> = {
 };
 
 const EXPRESSION_COLORS: Record<ExpressionType, { border: string; bg: string; text: string; glow: string }> = {
-  neutral: { border: 'border-zinc-500/50', bg: 'bg-zinc-950/80', text: 'text-zinc-300', glow: 'rgba(113, 113, 122, 0.3)' },
-  happy: { border: 'border-emerald-500/80', bg: 'bg-emerald-950/80', text: 'text-emerald-300', glow: 'rgba(16, 185, 129, 0.4)' },
-  sad: { border: 'border-blue-500/80', bg: 'bg-blue-950/80', text: 'text-blue-300', glow: 'rgba(59, 130, 246, 0.4)' },
-  angry: { border: 'border-red-500/90', bg: 'bg-red-950/90', text: 'text-red-300', glow: 'rgba(239, 68, 68, 0.5)' },
-  surprised: { border: 'border-purple-400/90', bg: 'bg-purple-950/90', text: 'text-purple-200', glow: 'rgba(168, 85, 247, 0.5)' },
-  fearful: { border: 'border-indigo-500/80', bg: 'bg-indigo-950/80', text: 'text-indigo-300', glow: 'rgba(99, 102, 241, 0.4)' },
-  disgusted: { border: 'border-pink-500/80', bg: 'bg-pink-950/80', text: 'text-pink-300', glow: 'rgba(236, 72, 153, 0.4)' },
+  neutral: { border: 'border-zinc-500/50', bg: 'bg-zinc-950/80', text: 'text-zinc-300', glow: 'rgba(113, 113, 122, 0.2)' },
+  happy: { border: 'border-[#84cc16]/80', bg: 'bg-[#84cc16]/20', text: 'text-[#84cc16]', glow: 'rgba(132, 204, 22, 0.3)' },
+  sad: { border: 'border-blue-500/80', bg: 'bg-blue-950/80', text: 'text-blue-300', glow: 'rgba(59, 130, 246, 0.3)' },
+  angry: { border: 'border-red-500/90', bg: 'bg-red-950/90', text: 'text-red-300', glow: 'rgba(239, 68, 68, 0.4)' },
+  surprised: { border: 'border-amber-400/90', bg: 'bg-amber-950/90', text: 'text-amber-200', glow: 'rgba(245, 158, 11, 0.4)' },
+  fearful: { border: 'border-purple-500/80', bg: 'bg-purple-950/80', text: 'text-purple-300', glow: 'rgba(168, 85, 247, 0.3)' },
+  disgusted: { border: 'border-pink-500/80', bg: 'bg-pink-950/80', text: 'text-pink-300', glow: 'rgba(236, 72, 153, 0.3)' },
 };
 
 export const FaceOverlay: React.FC<FaceOverlayProps> = ({ faces }) => {
@@ -51,33 +51,33 @@ export const FaceOverlay: React.FC<FaceOverlayProps> = ({ faces }) => {
               height: `${Math.max(10, Math.min(90, height))}%`,
             }}
           >
-            {/* Sleek Modern Bounding Box Reticle */}
+            {/* Reticle */}
             <div
               className={`w-full h-full border-2 rounded-xl relative transition-all duration-300 ${color.border}`}
               style={{
-                boxShadow: `0 0 20px ${color.glow}, inset 0 0 10px ${color.glow}`,
+                boxShadow: `0 0 15px ${color.glow}`,
               }}
             >
               {/* Top Tag: Face ID */}
-              <div className="absolute -top-7 left-0 flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-black/85 backdrop-blur-md border border-white/20 text-[10px] font-mono font-bold text-white shadow-lg">
-                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
+              <div className="absolute -top-7 left-0 flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/90 border border-white/20 text-[10px] font-mono font-bold text-white shadow">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#84cc16]" />
                 {face.faceId}
               </div>
 
               {/* Facing Direction indicator */}
               {face.facingDirection !== 'center' && (
-                <div className="absolute -top-7 right-0 px-2 py-0.5 rounded-md bg-black/85 backdrop-blur-md border border-purple-500/40 text-[10px] font-mono text-purple-300">
-                  {face.facingDirection === 'left' ? '◀ Left Glance' : 'Right Glance ▶'}
+                <div className="absolute -top-7 right-0 px-2 py-0.5 rounded bg-black/90 border border-white/20 text-[10px] font-mono text-zinc-300">
+                  {face.facingDirection === 'left' ? '◀ Left' : 'Right ▶'}
                 </div>
               )}
 
               {/* Bottom Tag: Expression & Confidence */}
               <div
-                className={`absolute -bottom-9 left-0 right-0 mx-auto w-max max-w-full flex items-center gap-2 px-2.5 py-1 rounded-lg backdrop-blur-md border shadow-xl ${color.bg} ${color.border} ${color.text}`}
+                className={`absolute -bottom-8 left-0 right-0 mx-auto w-max max-w-full flex items-center gap-2 px-2.5 py-0.5 rounded backdrop-blur-md border shadow-xl ${color.bg} ${color.border} ${color.text}`}
               >
-                <span className="text-sm leading-none">{emoji}</span>
+                <span className="text-xs leading-none">{emoji}</span>
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-bold uppercase tracking-wider leading-tight">
+                  <span className="text-[10px] font-bold uppercase tracking-wider leading-tight">
                     {face.currentExpression}
                   </span>
                   <span className="text-[9px] font-mono opacity-80 leading-none">

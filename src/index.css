@@ -1,12 +1,11 @@
 :root {
-  --bg-obsidian: #040408;
-  --bg-surface: rgba(14, 14, 22, 0.72);
-  --bg-surface-elevated: rgba(22, 22, 34, 0.85);
+  --bg-main: #09090b;
+  --bg-surface: rgba(18, 18, 22, 0.85);
+  --bg-surface-elevated: rgba(26, 26, 32, 0.95);
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(168, 85, 247, 0.35);
-  --accent-purple: #a855f7;
-  --accent-violet: #8b5cf6;
-  --accent-indigo: #6366f1;
+  --border-lime: rgba(132, 204, 22, 0.4);
+  --accent-lime: #84cc16;
+  --accent-lime-bright: #a3e635;
   --accent-crimson: #ef4444;
   --accent-gold: #f59e0b;
 }
@@ -18,113 +17,98 @@
 }
 
 body {
-  background-color: var(--bg-obsidian);
+  background-color: var(--bg-main);
   color: #f4f4f5;
-  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
   background-image: 
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(147, 51, 234, 0.18), transparent 70%),
-    radial-gradient(circle at 10% 40%, rgba(99, 102, 241, 0.08), transparent 50%),
-    radial-gradient(circle at 90% 70%, rgba(168, 85, 247, 0.08), transparent 50%),
-    radial-gradient(circle at 50% 100%, rgba(220, 38, 38, 0.06), transparent 60%);
+    radial-gradient(ellipse 60% 30% at 50% 0%, rgba(132, 204, 22, 0.06), transparent 70%),
+    radial-gradient(circle at 10% 40%, rgba(132, 204, 22, 0.03), transparent 40%),
+    radial-gradient(circle at 90% 60%, rgba(132, 204, 22, 0.03), transparent 40%);
   background-attachment: fixed;
 }
 
-/* Radiant Ambient Backlight (Used behind Hero Workbench) */
-.ambient-glow-purple {
-  position: absolute;
-  top: -100px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 75%;
-  height: 380px;
-  background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.22) 0%, rgba(99, 102, 241, 0.12) 40%, transparent 75%);
-  filter: blur(80px);
-  pointer-events: none;
-  z-index: 0;
+/* Subtle Crosshair & Grid System (Inspired by Watermelon UI) */
+.crosshair-corner {
+  position: relative;
 }
-
-.ambient-glow-sphere {
+.crosshair-corner::before {
+  content: '+';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 320px;
-  height: 320px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, rgba(139, 92, 246, 0.18) 45%, transparent 75%);
-  filter: blur(60px);
+  top: -10px;
+  left: -10px;
+  font-family: monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.2);
   pointer-events: none;
 }
-
-/* Sleek Typography Gradients */
-.gradient-text-purple {
-  background: linear-gradient(135deg, #ffffff 0%, #ede9fe 45%, #c084fc 80%, #a855f7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.crosshair-corner::after {
+  content: '+';
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-family: monospace;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.2);
+  pointer-events: none;
 }
 
-.gradient-text-silver {
-  background: linear-gradient(180deg, #ffffff 0%, #e4e4e7 60%, #a1a1aa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Watermelon UI Lime Button */
+.btn-lime {
+  background-color: #84cc16;
+  color: #000000;
+  font-weight: 700;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 15px rgba(132, 204, 22, 0.25);
+}
+.btn-lime:hover {
+  background-color: #a3e635;
+  box-shadow: 0 0 25px rgba(163, 230, 53, 0.4);
+  transform: translateY(-1px);
+}
+.btn-lime:active {
+  transform: translateY(1px);
 }
 
-.gradient-text-gold {
-  background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 60%, #b45309 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* Secondary Clean Dark Button */
+.btn-dark {
+  background-color: rgba(255, 255, 255, 0.04);
+  color: #d4d4d8;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.2s ease;
+}
+.btn-dark:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
 }
 
-/* Glassmorphism Cards & Borders */
+/* Monospace Pill Badge (Watermelon UI Header style) */
+.pill-badge {
+  background: rgba(24, 24, 27, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: #a1a1aa;
+}
+
+/* Surface Cards */
 .glass-card {
   background: var(--bg-surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
 }
 
 .glass-card-elevated {
   background: var(--bg-surface-elevated);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-}
-
-.glass-pill {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 9999px;
-  transition: all 0.25s ease;
-}
-
-.glass-pill:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Glowing Purple CTA Button (Inspired by reference) */
-.btn-glow-purple {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #4f46e5 100%);
-  border: 1px solid rgba(192, 132, 252, 0.4);
-  box-shadow: 0 0 25px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-glow-purple:hover {
-  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #6366f1 100%);
-  box-shadow: 0 0 35px rgba(168, 85, 247, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  transform: translateY(-1px);
-}
-
-.btn-glow-purple:active {
-  transform: translateY(1px);
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+  border-radius: 20px;
 }
 
 /* Mirror for front webcam */
@@ -142,13 +126,13 @@ body {
   height: 100%;
   pointer-events: none;
   background: linear-gradient(
-    rgba(18, 16, 26, 0) 50%, 
-    rgba(0, 0, 0, 0.28) 50%
+    rgba(18, 18, 22, 0) 50%, 
+    rgba(0, 0, 0, 0.3) 50%
   ), linear-gradient(
     90deg,
-    rgba(168, 85, 247, 0.02),
-    rgba(0, 255, 0, 0.01),
-    rgba(99, 102, 241, 0.02)
+    rgba(132, 204, 22, 0.02),
+    rgba(0, 0, 0, 0),
+    rgba(132, 204, 22, 0.02)
   );
   background-size: 100% 4px, 6px 100%;
   z-index: 5;
@@ -212,9 +196,9 @@ body {
   background: radial-gradient(circle, rgba(245, 158, 11, 0.8) 0%, rgba(180, 83, 9, 0.4) 60%, transparent 100%);
 }
 
-.animate-flash-purple {
+.animate-flash-lime {
   animation: dramatic-flash 0.7s ease-out forwards;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.8) 0%, rgba(99, 102, 241, 0.4) 60%, transparent 100%);
+  background: radial-gradient(circle, rgba(132, 204, 22, 0.8) 0%, rgba(101, 163, 13, 0.4) 60%, transparent 100%);
 }
 
 /* Audio Waveform Animation */
@@ -228,23 +212,14 @@ body {
 .audio-bar-3 { animation: audio-wave 0.9s ease-in-out infinite 0.3s; }
 .audio-bar-4 { animation: audio-wave 0.7s ease-in-out infinite 0.2s; }
 
-/* Subtle Floating Animation for 3D elements */
-@keyframes float-subtle {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(1.5deg); }
+/* Pulse Indicator */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.85); }
 }
 
-.animate-float {
-  animation: float-subtle 6s ease-in-out infinite;
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
+.animate-pulse-dot {
+  animation: pulse-dot 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Custom Scrollbar */
@@ -256,9 +231,9 @@ body {
   background: rgba(0, 0, 0, 0.35);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.35);
+  background: rgba(132, 204, 22, 0.35);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(168, 85, 247, 0.7);
+  background: rgba(132, 204, 22, 0.7);
 }
