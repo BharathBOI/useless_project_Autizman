@@ -1,0 +1,4 @@
+node_modules
+.env
+.env.example
+serialos_v1.zip
