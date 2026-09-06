@@ -41,6 +41,11 @@ ParambaraHUB bridges this gap by turning your webcam into a full-blown mega-seri
 * **Audio Output:** Speakers or headphones for immersive dramatic stings
 
 ### Implementation
+Try It Live
+
+Live deployment: https://useless-project-autizman.vercel.app/
+
+The application runs directly in the browser using your webcam and audio output.
 
 #### Installation
 
